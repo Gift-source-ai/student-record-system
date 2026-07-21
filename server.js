@@ -77,6 +77,17 @@ app.get('/', (req, res) => {
   });
 });
 
+// Show login form
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+// Handle login submission (demo only — no real auth yet)
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  console.log(`Login attempt: ${username}`);
+  res.redirect('/');
+});
 // Show add-student form
 app.get('/add', (req, res) => {
   res.render('add');
