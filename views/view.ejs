@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View Student</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <a href="/" class="brand">📚 Student Record System</a>
+  </header>
+
+  <main class="container">
+    <div class="profile-card glass-panel">
+      <div class="profile-avatar">
+        <%= (student.name || '?').charAt(0).toUpperCase() %>
+      </div>
+      <div class="profile-name"><%= student.name %></div>
+      <div class="profile-course"><%= student.course %></div>
+      
+      <div class="profile-details">
+        <div class="detail-item">
+          <div class="detail-label">Email Address</div>
+          <div class="detail-value"><%= student.email %></div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Current Grade</div>
+          <div class="detail-value">
+            <span style="background: <%= student.grade === 'A' || student.grade === 'B' ? 'rgba(34,197,94,0.1)' : (student.grade === 'C' ? 'rgba(234,179,8,0.1)' : 'rgba(239,68,68,0.1)') %>; color: <%= student.grade === 'A' || student.grade === 'B' ? '#16a34a' : (student.grade === 'C' ? '#ca8a04' : '#dc2626') %>; padding: 4px 12px; border-radius: 12px; font-weight: 700;">
+              <%= student.grade || 'N/A' %>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions" style="justify-content: center;">
+        <a href="/edit/<%= student.id %>" class="btn btn-primary" style="width: 150px;">Edit Profile</a>
+        <a href="/" class="btn btn-outline" style="width: 150px;">Back to List</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

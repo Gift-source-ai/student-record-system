@@ -12,25 +12,38 @@
   </header>
 
   <main class="container">
-    <h1>Edit Student</h1>
-    <form method="POST" action="/edit/<%= student.id %>" class="student-form">
-      <label>Name
-        <input type="text" name="name" value="<%= student.name %>" required />
-      </label>
-      <label>Email
-        <input type="email" name="email" value="<%= student.email %>" required />
-      </label>
-      <label>Course
-        <input type="text" name="course" value="<%= student.course %>" required />
-      </label>
-      <label>Grade
-        <input type="text" name="grade" value="<%= student.grade %>" />
-      </label>
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Update</button>
-        <a href="/" class="btn">Cancel</a>
-      </div>
-    </form>
+    <div class="glass-panel student-form">
+      <h1>Edit Student</h1>
+      <form method="POST" action="/edit/<%= student.id %>">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="name" value="<%= student.name %>" required />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" name="email" value="<%= student.email %>" required />
+        </div>
+        <div class="form-group">
+          <label>Course</label>
+          <input type="text" name="course" value="<%= student.course %>" required />
+        </div>
+        <div class="form-group">
+          <label>Grade</label>
+          <select name="grade">
+            <option value="" <%= !student.grade ? 'selected' : '' %>>Select a grade...</option>
+            <option value="A" <%= student.grade === 'A' ? 'selected' : '' %>>A</option>
+            <option value="B" <%= student.grade === 'B' ? 'selected' : '' %>>B</option>
+            <option value="C" <%= student.grade === 'C' ? 'selected' : '' %>>C</option>
+            <option value="D" <%= student.grade === 'D' ? 'selected' : '' %>>D</option>
+            <option value="F" <%= student.grade === 'F' ? 'selected' : '' %>>F</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" style="flex: 1;">Update Student</button>
+          <a href="/" class="btn btn-outline" style="flex: 1; text-align: center;">Cancel</a>
+        </div>
+      </form>
+    </div>
   </main>
 </body>
 </html>
