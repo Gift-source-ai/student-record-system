@@ -27,18 +27,54 @@ function generateId() {
 
 // --- Routes ---
 
-// List all students (with optional search)
+// List all students (with optional search and sort)
 app.get('/', (req, res) => {
-  const students = readStudents();
+  let students = readStudents();
+  
+  // Calculate Analytics
+  const totalStudents = students.length;
+  const uniqueCourses = new Set(students.map(s => (s.course || '').toLowerCase().trim())).size;
+  
+  const courseCounts = {};
+  students.forEach(s => {
+    const c = s.course || 'Unknown';
+    courseCounts[c] = (courseCounts[c] || 0) + 1;
+  });
+  let topCourse = 'N/A';
+  let maxCount = 0;
+  for (const [c, count] of Object.entries(courseCounts)) {
+    if (count > maxCount) { maxCount = count; topCourse = c; }
+  }
+
+  // Search
   const q = (req.query.q || '').toLowerCase();
-  const filtered = q
-    ? students.filter(
-        (s) =>
-          s.name.toLowerCase().includes(q) ||
-          s.course.toLowerCase().includes(q)
-      )
-    : students;
-  res.render('index', { students: filtered, q: req.query.q || '' });
+  if (q) {
+    students = students.filter(
+      (s) =>
+        (s.name || '').toLowerCase().includes(q) ||
+        (s.course || '').toLowerCase().includes(q)
+    );
+  }
+
+  // Sort
+  const sort = req.query.sort || 'name';
+  const order = req.query.order === 'desc' ? -1 : 1;
+  
+  students.sort((a, b) => {
+    const valA = (a[sort] || '').toLowerCase();
+    const valB = (b[sort] || '').toLowerCase();
+    if (valA < valB) return -1 * order;
+    if (valA > valB) return 1 * order;
+    return 0;
+  });
+
+  res.render('index', { 
+    students, 
+    q: req.query.q || '',
+    stats: { totalStudents, uniqueCourses, topCourse },
+    sort,
+    order: req.query.order || 'asc'
+  });
 });
 
 // Show add-student form
